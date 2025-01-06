@@ -1,0 +1,7 @@
+[core]
+    remote = myremote
+['remote "myremote"']
+    url = s3://bucket-00081/
+    access_key_id = AKIAXAJL2BK5IZNYO7JF
+    secret_access_key = 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
+    region = us-east-1

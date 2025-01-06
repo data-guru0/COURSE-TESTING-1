@@ -8,3 +8,4 @@ imbalanced-learn
 lightgbm
 dvc
 python-dotenv
+dvc[s3]

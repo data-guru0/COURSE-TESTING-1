@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/ML-1/mlruns/0/6399d1a779fd4c2d8006228e2e8b10fb/artifacts
+end_time: 1736152808246
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 6399d1a779fd4c2d8006228e2e8b10fb
+run_name: useful-shoat-22
+run_uuid: 6399d1a779fd4c2d8006228e2e8b10fb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1736152790458
+status: 3
+tags: []
+user_id: gusai
