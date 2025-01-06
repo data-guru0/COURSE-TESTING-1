@@ -1,0 +1,9 @@
+pandas
+numpy
+setuptools
+boto3
+scikit-learn
+pyyaml
+imbalanced-learn
+lightgbm
+dvc

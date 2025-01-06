@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/ML-1/mlruns/0/e000a22a84aa47039500e2b2a8d50bf9/artifacts
+end_time: 1736143343216
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: e000a22a84aa47039500e2b2a8d50bf9
+run_name: treasured-colt-670
+run_uuid: e000a22a84aa47039500e2b2a8d50bf9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1736143330198
+status: 3
+tags: []
+user_id: gusai

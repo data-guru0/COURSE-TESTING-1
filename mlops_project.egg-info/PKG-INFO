@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: mlops_project
+Version: 0.1
+Summary: An MLOps project setup with custom logging and exception handling
+Author: Your Name
+Author-email: your.email@example.com
+Requires-Python: >=3.7
+Requires-Dist: pandas
+Requires-Dist: numpy
+Requires-Dist: setuptools
+Requires-Dist: boto3
+Requires-Dist: scikit-learn
+Requires-Dist: pyyaml
+Requires-Dist: imbalanced-learn
+Requires-Dist: lightgbm
+Requires-Dist: dvc

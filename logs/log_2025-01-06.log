@@ -1,0 +1,78 @@
+2025-01-06 13:24:37,011 - INFO - Successfully read YAML file: config/config.yaml
+2025-01-06 13:24:37,343 - INFO - Starting data ingestion process
+2025-01-06 13:24:37,343 - INFO - Fetching data from DynamoDB table: mlops_table
+2025-01-06 13:24:41,044 - INFO - Fetching next page of results...
+2025-01-06 13:24:43,270 - INFO - Fetching next page of results...
+2025-01-06 13:24:45,505 - INFO - Fetching next page of results...
+2025-01-06 13:24:47,752 - INFO - Fetching next page of results...
+2025-01-06 13:24:50,020 - INFO - Fetching next page of results...
+2025-01-06 13:24:52,048 - INFO - Fetching next page of results...
+2025-01-06 13:24:54,427 - INFO - Fetching next page of results...
+2025-01-06 13:24:56,676 - INFO - Fetching next page of results...
+2025-01-06 13:24:58,729 - INFO - Fetching next page of results...
+2025-01-06 13:25:00,982 - INFO - Fetching next page of results...
+2025-01-06 13:25:04,335 - INFO - Fetching next page of results...
+2025-01-06 13:25:06,647 - INFO - Fetching next page of results...
+2025-01-06 13:25:08,824 - INFO - Fetching next page of results...
+2025-01-06 13:25:11,794 - INFO - Successfully fetched 36275 records from DynamoDB.
+2025-01-06 13:25:11,794 - INFO - Splitting data into train and test datasets
+2025-01-06 13:25:12,451 - INFO - Train data saved to artifacts/raw\train.csv
+2025-01-06 13:25:12,451 - INFO - Test data saved to artifacts/raw\test.csv
+2025-01-06 13:25:12,467 - INFO - Data ingestion process completed successfully
+2025-01-06 13:25:12,467 - INFO - End of data ingestion process
+2025-01-06 13:25:12,514 - INFO - Successfully read YAML file: config/config.yaml
+2025-01-06 13:25:12,514 - INFO - Loading data from artifacts/raw\train.csv
+2025-01-06 13:25:12,654 - INFO - Loading data from artifacts/raw\test.csv
+2025-01-06 13:25:12,718 - INFO - Starting data preprocessing
+2025-01-06 13:25:12,718 - INFO - Dropping 'Booking_ID' column and duplicates
+2025-01-06 13:25:12,748 - INFO - Applying Label Encoding
+2025-01-06 13:25:12,780 - INFO - Label Encoding Mappings:
+2025-01-06 13:25:12,780 - INFO - type_of_meal_plan: {'Meal Plan 1': np.int64(0), 'Meal Plan 2': np.int64(1), 'Meal Plan 3': np.int64(2), 'Not Selected': np.int64(3)}
+2025-01-06 13:25:12,780 - INFO - required_car_parking_space: {np.int64(0): np.int64(0), np.int64(1): np.int64(1)}
+2025-01-06 13:25:12,780 - INFO - room_type_reserved: {'Room_Type 1': np.int64(0), 'Room_Type 2': np.int64(1), 'Room_Type 3': np.int64(2), 'Room_Type 4': np.int64(3), 'Room_Type 5': np.int64(4), 'Room_Type 6': np.int64(5), 'Room_Type 7': np.int64(6)}
+2025-01-06 13:25:12,780 - INFO - market_segment_type: {'Aviation': np.int64(0), 'Complementary': np.int64(1), 'Corporate': np.int64(2), 'Offline': np.int64(3), 'Online': np.int64(4)}
+2025-01-06 13:25:12,780 - INFO - repeated_guest: {np.int64(0): np.int64(0), np.int64(1): np.int64(1)}
+2025-01-06 13:25:12,780 - INFO - booking_status: {'Canceled': np.int64(0), 'Not_Canceled': np.int64(1)}
+2025-01-06 13:25:12,780 - INFO - Applying log transformation to columns with skewness > 5
+2025-01-06 13:25:12,795 - INFO - Starting data preprocessing
+2025-01-06 13:25:12,795 - INFO - Dropping 'Booking_ID' column and duplicates
+2025-01-06 13:25:12,811 - INFO - Applying Label Encoding
+2025-01-06 13:25:12,811 - INFO - Label Encoding Mappings:
+2025-01-06 13:25:12,811 - INFO - type_of_meal_plan: {'Meal Plan 1': np.int64(0), 'Meal Plan 2': np.int64(1), 'Not Selected': np.int64(2)}
+2025-01-06 13:25:12,811 - INFO - required_car_parking_space: {np.int64(0): np.int64(0), np.int64(1): np.int64(1)}
+2025-01-06 13:25:12,811 - INFO - room_type_reserved: {'Room_Type 1': np.int64(0), 'Room_Type 2': np.int64(1), 'Room_Type 3': np.int64(2), 'Room_Type 4': np.int64(3), 'Room_Type 5': np.int64(4), 'Room_Type 6': np.int64(5), 'Room_Type 7': np.int64(6)}
+2025-01-06 13:25:12,811 - INFO - market_segment_type: {'Aviation': np.int64(0), 'Complementary': np.int64(1), 'Corporate': np.int64(2), 'Offline': np.int64(3), 'Online': np.int64(4)}
+2025-01-06 13:25:12,811 - INFO - repeated_guest: {np.int64(0): np.int64(0), np.int64(1): np.int64(1)}
+2025-01-06 13:25:12,811 - INFO - booking_status: {'Canceled': np.int64(0), 'Not_Canceled': np.int64(1)}
+2025-01-06 13:25:12,811 - INFO - Applying log transformation to columns with skewness > 5
+2025-01-06 13:25:12,827 - INFO - Balancing the dataset using SMOTE
+2025-01-06 13:25:13,250 - INFO - Dataset balanced successfully
+2025-01-06 13:25:13,250 - INFO - Balancing the dataset using SMOTE
+2025-01-06 13:25:13,328 - INFO - Dataset balanced successfully
+2025-01-06 13:25:13,328 - INFO - Selecting top features using Random Forest
+2025-01-06 13:25:18,768 - INFO - Top features selected: ['lead_time', 'no_of_special_requests', 'avg_price_per_room', 'arrival_month', 'arrival_date', 'market_segment_type', 'no_of_week_nights', 'no_of_weekend_nights', 'type_of_meal_plan', 'room_type_reserved']
+2025-01-06 13:25:18,785 - INFO - Saving data to artifacts/processed\processed_train.csv
+2025-01-06 13:25:18,910 - INFO - Data successfully saved to artifacts/processed\processed_train.csv
+2025-01-06 13:25:18,910 - INFO - Saving data to artifacts/processed\processed_test.csv
+2025-01-06 13:25:18,941 - INFO - Data successfully saved to artifacts/processed\processed_test.csv
+2025-01-06 13:25:18,941 - INFO - Data processing completed successfully
+2025-01-06 13:25:20,379 - INFO - Starting experiment with MLflow
+2025-01-06 13:25:20,379 - INFO - Logging the training dataset as an artifact
+2025-01-06 13:25:20,394 - INFO - Logging the testing dataset as an artifact
+2025-01-06 13:25:20,394 - INFO - Loading training data from artifacts/processed\processed_train.csv
+2025-01-06 13:25:20,394 - INFO - Loading data from artifacts/processed\processed_train.csv
+2025-01-06 13:25:20,457 - INFO - Loading testing data from artifacts/processed\processed_test.csv
+2025-01-06 13:25:20,457 - INFO - Loading data from artifacts/processed\processed_test.csv
+2025-01-06 13:25:20,535 - INFO - Initializing LGBM model
+2025-01-06 13:25:20,535 - INFO - Starting RandomizedSearchCV for hyperparameter tuning
+2025-01-06 13:25:20,535 - INFO - Fitting RandomizedSearchCV to the training data
+2025-01-06 13:25:40,439 - INFO - Hyperparameter tuning completed successfully
+2025-01-06 13:25:40,439 - INFO - Best Hyperparameters: {'boosting_type': 'goss', 'colsample_bytree': np.float64(0.9560699842170359), 'learning_rate': np.float64(0.16703519227860275), 'max_depth': 48, 'min_data_in_leaf': 12, 'n_estimators': 406, 'num_leaves': 26, 'subsample': np.float64(0.6705241236872915)}
+2025-01-06 13:25:40,439 - INFO - Evaluating the model on the test set
+2025-01-06 13:25:40,548 - INFO - Accuracy: 0.8380
+2025-01-06 13:25:40,548 - INFO - Recall: 0.8106
+2025-01-06 13:25:40,548 - INFO - Precision: 0.8576
+2025-01-06 13:25:40,548 - INFO - F1 Score: 0.8334
+2025-01-06 13:25:40,548 - INFO - Saving model to artifacts/models/lgbm_model.pkl
+2025-01-06 13:25:40,595 - INFO - Model saved successfully!
+2025-01-06 13:25:40,626 - INFO - Logging completed successfully!

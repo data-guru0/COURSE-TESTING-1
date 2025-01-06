@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/ML-1/mlruns/0/70674988e8384b4f8361e016cc4818dc/artifacts
+end_time: 1736143051881
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 70674988e8384b4f8361e016cc4818dc
+run_name: gaudy-vole-108
+run_uuid: 70674988e8384b4f8361e016cc4818dc
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1736143038400
+status: 3
+tags: []
+user_id: gusai
