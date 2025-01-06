@@ -1,3 +1,4 @@
 artifacts/raw/
 artifacts/processed/
 venv/
+.env
