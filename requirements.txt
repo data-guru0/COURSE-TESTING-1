@@ -7,3 +7,4 @@ pyyaml
 imbalanced-learn
 lightgbm
 dvc
+python-dotenv

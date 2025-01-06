@@ -7,19 +7,25 @@ from src.custom_exception import CustomException
 from src.logger import get_logger
 from utils.common_function import read_yaml
 from config.paths_config import *
+from dotenv import load_dotenv
 
 
 # Initialize the logger
 logger = get_logger(__name__)
-
+load_dotenv()
 
 class DataIngestion:
     def __init__(self, config):
         self.config = config
         self.dynamodb_table_name = self.config["aws"]["dynamodb_table_name"]
         self.region_name = self.config["aws"]["region_name"]
-        self.aws_access_key_id = self.config["aws"]["access_key_id"]
-        self.aws_secret_access_key = self.config["aws"]["secret_access_key"]
+
+        # Fetch credentials from environment variables
+        self.aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
+        self.aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+
+        if not self.aws_access_key_id or not self.aws_secret_access_key:
+            raise CustomException("AWS credentials are not set in environment variables or .env file")
 
         # Initialize the DynamoDB resource with explicit credentials
         self.dynamodb = boto3.resource(
