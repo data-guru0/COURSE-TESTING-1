@@ -7,3 +7,6 @@ pyyaml
 imbalanced-learn
 lightgbm
 dvc
+python-dotenv
+dvc[s3]
+Flask

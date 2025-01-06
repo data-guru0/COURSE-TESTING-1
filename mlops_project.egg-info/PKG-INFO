@@ -14,3 +14,6 @@ Requires-Dist: pyyaml
 Requires-Dist: imbalanced-learn
 Requires-Dist: lightgbm
 Requires-Dist: dvc
+Requires-Dist: python-dotenv
+Requires-Dist: dvc[s3]
+Requires-Dist: Flask
