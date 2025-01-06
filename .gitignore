@@ -1,4 +1,5 @@
 artifacts/raw/
 artifacts/processed/
 venv/
-.env
+.env".env" 
+"config/config.yaml" 
