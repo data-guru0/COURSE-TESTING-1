@@ -1,6 +1,6 @@
 aws:
-  access_key_id: "AKIAXAJL2BK5ATTNARAZ"
-  secret_access_key: "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"
+  access_key_id: "${AWS_ACCESS_KEY_ID}"
+  secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
   region_name: "us-east-1"
   dynamodb_table_name: "mlops_table"
 
