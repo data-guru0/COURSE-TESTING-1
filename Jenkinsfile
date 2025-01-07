@@ -75,9 +75,13 @@ pipeline {
                     # Configure Docker to authenticate with GCR
                     gcloud auth configure-docker --quiet
 
-                    # SSH into GCP VM and pull & run Docker image
+                    # SSH into GCP VM
                     gcloud compute ssh mlops --zone us-central1-a --project ${GCP_PROJECT} -- \
-                        "docker pull gcr.io/${GCP_PROJECT}/course-testing:latest && \
+                        "sudo apt-get update && \
+                         sudo apt-get install -y docker.io && \
+                         sudo systemctl enable docker && \
+                         sudo systemctl start docker && \
+                         docker pull gcr.io/${GCP_PROJECT}/course-testing:latest && \
                          docker run -d -p 5000:5000 gcr.io/${GCP_PROJECT}/course-testing:latest"
                 '''
             }
