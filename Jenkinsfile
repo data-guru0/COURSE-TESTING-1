@@ -61,16 +61,24 @@ pipeline {
 
         stage('Deploy to GCP VM') {
     steps {
-        script {
-            echo 'Deploying Docker image to GCP VM...'
-            withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+        withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+            script {
+                echo 'Deploying Docker image to GCP VM...'
                 sh '''
-                    # SSH into the GCP VM and deploy the Docker image
-                    gcloud compute ssh mlops --zone us-central1-a --project vocal-antler-447107-i9 -- \
-                        "gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS} && \
-                         gcloud auth configure-docker --quiet && \
-                         docker pull gcr.io/vocal-antler-447107-i9/course-testing:latest && \
-                         docker run -d -p 5000:5000 gcr.io/vocal-antler-447107-i9/course-testing:latest"
+                    # Ensure gcloud is available in the PATH
+                    export PATH=$PATH:${GCLOUD_PATH}
+
+                    # Authenticate with Google Cloud using the service account
+                    gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                    gcloud config set project ${GCP_PROJECT}
+
+                    # Configure Docker to authenticate with GCR
+                    gcloud auth configure-docker --quiet
+
+                    # SSH into GCP VM and pull & run Docker image
+                    gcloud compute ssh mlops --zone us-central1-a --project ${GCP_PROJECT} -- \
+                        "docker pull gcr.io/${GCP_PROJECT}/course-testing:latest && \
+                         docker run -d -p 5000:5000 gcr.io/${GCP_PROJECT}/course-testing:latest"
                 '''
             }
         }
