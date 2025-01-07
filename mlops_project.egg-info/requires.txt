@@ -10,3 +10,6 @@ dvc
 python-dotenv
 dvc[s3]
 Flask
+pylint
+flake8
+black

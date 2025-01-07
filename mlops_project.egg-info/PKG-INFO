@@ -17,3 +17,6 @@ Requires-Dist: dvc
 Requires-Dist: python-dotenv
 Requires-Dist: dvc[s3]
 Requires-Dist: Flask
+Requires-Dist: pylint
+Requires-Dist: flake8
+Requires-Dist: black

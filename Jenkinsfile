@@ -1,5 +1,9 @@
 pipeline {
     agent any
+
+    environment {
+        VENV_DIR = 'venv' // Directory for the virtual environment
+    }
     
     stages {
         stage('Cloning from Github') {
@@ -7,6 +11,35 @@ pipeline {
                 script {
                     echo 'Cloning from Github...'
                     checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/data-guru0/COURSE-TESTING-1.git']])
+                }
+            }
+        }
+
+        stage('Setup Virtual Environment') {
+            steps {
+                script {
+                    echo 'Setting up virtual environment'
+                    sh '''
+                        python -m venv ${VENV_DIR}
+                        . ${VENV_DIR}/bin/activate
+                        pip install --upgrade pip
+                        pip install -e .
+                    '''
+                }
+            }
+        }
+
+        stage('Linting Code') {
+            steps {
+                script {
+                    echo 'Linting Python Code...'
+                    sh '''
+                        set -e
+                        . ${VENV_DIR}/bin/activate
+                        pylint application.py pipeline/training_pipeline.py --output=pylint-report.txt --exit-zero || echo "Pylint completed with issues."
+                        flake8 application.py pipeline/training_pipeline.py --ignore=E501,E302 --output-file=flake8-report.txt || echo "Flake8 completed with issues."
+                        black application.py pipeline/training_pipeline.py || echo "Black formatting completed."
+                    '''
                 }
             }
         }
