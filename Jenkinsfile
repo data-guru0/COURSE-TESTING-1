@@ -99,7 +99,7 @@ pipeline {
                         export PATH=${HOME}/google-cloud-sdk/bin:$PATH
 
                         # Authenticate with Google Cloud using the credential file from Jenkins
-                        withCredentials([file(credentialsId: 'gcp-service-account', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                        withCredentials([file(credentialsId: 'gcp-service-account-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                             gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
                             
                             # Tag the Docker image for Google Container Registry (GCR)
