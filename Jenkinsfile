@@ -83,26 +83,30 @@ pipeline {
         stage('Push Docker Image to GCR') {
             steps {
                 script {
-                    sh '''
-                    # Remove any existing Google Cloud SDK directory to avoid conflicts
-                    rm -rf /var/jenkins_home/google-cloud-sdk
+                    echo 'Pushing Docker Image to Google Container Registry...'
+            sh '''
+                # Remove any existing Google Cloud SDK directory to avoid conflicts
+                rm -rf /var/jenkins_home/google-cloud-sdk
 
-                    # Install Google Cloud SDK temporarily for the pipeline run
-                    curl https://sdk.cloud.google.com | bash
+                # Install Google Cloud SDK temporarily for the pipeline run
+                curl https://sdk.cloud.google.com | bash
 
-                    # Explicitly use bash to source the environment setup files
-                    bash -c "source ${HOME}/google-cloud-sdk/completion.bash.inc"
-                    bash -c "source ${HOME}/google-cloud-sdk/path.bash.inc"
+                # Source the environment setup files to make gcloud available
+                bash -c "source ${HOME}/google-cloud-sdk/completion.bash.inc"
+                bash -c "source ${HOME}/google-cloud-sdk/path.bash.inc"
 
-                    # Authenticate with Google Cloud
-                    gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
-                    
-                    # Tag the Docker image for Google Container Registry (GCR)
-                    docker tag ${DOCKERHUB_REPOSITORY}:latest gcr.io/${GCP_PROJECT}/course-testing:latest
-                    
-                    # Push the image to GCR
-                    docker push gcr.io/${GCP_PROJECT}/course-testing:latest
-                '''
+                # Ensure gcloud is in the path
+                export PATH=${HOME}/google-cloud-sdk/bin:$PATH
+
+                # Authenticate with Google Cloud
+                gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                
+                # Tag the Docker image for Google Container Registry (GCR)
+                docker tag ${DOCKERHUB_REPOSITORY}:latest gcr.io/${GCP_PROJECT}/course-testing:latest
+                
+                # Push the image to GCR
+                docker push gcr.io/${GCP_PROJECT}/course-testing:latest
+            '''
                 }
             }
         }
