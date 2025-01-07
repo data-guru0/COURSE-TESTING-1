@@ -89,14 +89,5 @@ pipeline {
             }
         }
 
-        stage('Deploy to AWS') {
-            steps {
-                // Deploy
-                script {
-                    echo 'Deploy to AWS...'
-                    sh "aws ecs update-service --cluster mlops_ecs --service mlops-service --force-new-deployment"
-                }
-            }
-        }
     }
 }
