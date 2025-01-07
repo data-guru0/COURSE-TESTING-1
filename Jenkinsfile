@@ -66,8 +66,10 @@ pipeline {
 
                 # SSH into the GCP VM and deploy the Docker image
                 gcloud compute ssh mlops --zone us-central1-a --project ${GCP_PROJECT} -- \
-                "docker pull gcr.io/${GCP_PROJECT}/course-testing:latest && \
-                docker run -d -p 5000:5000 gcr.io/${GCP_PROJECT}/course-testing:latest"
+                    "gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS} && \
+                    gcloud auth configure-docker --quiet && \
+                    docker pull gcr.io/${GCP_PROJECT}/course-testing:latest && \
+                    docker run -d -p 5000:5000 gcr.io/${GCP_PROJECT}/course-testing:latest"
             '''
         }
     }
