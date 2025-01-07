@@ -14,8 +14,8 @@ LIGHTGBM_PARAMS = {
 
 # RandomizedSearchCV parameters
 RANDOM_SEARCH_PARAMS = {
-    'n_iter': 1,                   # Number of iterations for random search
-    'cv': 1,                       # 3-fold cross-validation
+    'n_iter': 4,                   # Number of iterations for random search
+    'cv': 2,                       # 3-fold cross-validation
     'n_jobs': -1,                  # Use all available cores
     'verbose': 2,                  # Verbosity of output
     'random_state': 42,            # Random seed for reproducibility
