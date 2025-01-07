@@ -56,5 +56,19 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to GCP VM') {
+    steps {
+        script {
+            echo 'Deploying Docker image to GCP VM...'
+            sh '''
+                # SSH into the GCP VM and deploy the Docker image
+                gcloud compute ssh mlops --zone ${GCP_ZONE} --project ${GCP_PROJECT} -- \
+                    "docker pull gcr.io/${GCP_PROJECT}/course-testing:latest && \
+                    docker run -d -p 80:5000 gcr.io/${GCP_PROJECT}/course-testing:latest"
+            '''
+        }
+    }
+}
     }
 }
