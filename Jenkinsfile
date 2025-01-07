@@ -5,6 +5,7 @@ pipeline {
         VENV_DIR = 'venv'
         DOCKERHUB_CREDENTIAL_ID = 'dockerhub-token'
         GCP_PROJECT = 'vocal-antler-447107-i9'
+        GCLOUD_PATH = '/var/jenkins_home/google-cloud-sdk/bin'  // Path to gcloud binary
     }
 
     stages {
@@ -33,10 +34,13 @@ pipeline {
 
         stage('Build and Push Docker Image') {
             steps {
-                withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                withCredentials([file(credentialsId: 'gcp-service-account-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                     script {
                         echo 'Authenticating with Google Cloud and pushing Docker image to GCR...'
                         sh '''
+                            # Ensure gcloud is available in the PATH
+                            export PATH=$PATH:${GCLOUD_PATH}
+
                             # Authenticate with Google Cloud using the service account
                             gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
                             gcloud config set project ${GCP_PROJECT}
