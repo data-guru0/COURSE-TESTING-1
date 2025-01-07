@@ -84,16 +84,20 @@ pipeline {
             steps {
                 script {
                     echo 'Pushing Docker Image to Google Container Registry...'
-                    sh '''
-                        # Authenticate with Google Cloud
-                        gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
-                        
-                        # Tag the Docker image for Google Container Registry (GCR)
-                        docker tag ${DOCKERHUB_REPOSITORY}:latest gcr.io/${GCP_PROJECT}/course-testing:latest
-                        
-                        # Push the image to GCR
-                        docker push gcr.io/${GCP_PROJECT}/course-testing:latest
-                    '''
+                sh '''
+                    # Install Google Cloud SDK temporarily for the pipeline run
+                    curl https://sdk.cloud.google.com | bash
+                    exec -l $SHELL
+
+                    # Authenticate with Google Cloud
+                    gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                    
+                    # Tag the Docker image for Google Container Registry (GCR)
+                    docker tag ${DOCKERHUB_REPOSITORY}:latest gcr.io/${GCP_PROJECT}/course-testing:latest
+                    
+                    # Push the image to GCR
+                    docker push gcr.io/${GCP_PROJECT}/course-testing:latest
+                '''
                 }
             }
         }
