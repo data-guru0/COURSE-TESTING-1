@@ -32,45 +32,28 @@ pipeline {
             }
         }
 
-        stage('Linting Code') {
-            steps {
-                script {
-                    echo 'Linting Python code...'
-                    sh '''
-                        set -e
-                        . ${VENV_DIR}/bin/activate
-                        pylint application.py pipeline/training_pipeline.py || echo "Pylint completed with issues."
-                        flake8 application.py pipeline/training_pipeline.py --ignore=E501,E302 || echo "Flake8 completed with issues."
-                        black application.py pipeline/training_pipeline.py || echo "Black formatting completed."
-                    '''
-                }
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    echo 'Building Docker image...'
-                    dockerImage = docker.build("${DOCKERHUB_REPOSITORY}:latest")
-                }
-            }
-        }
-
-        stage('Push Docker Image to GCR') {
+        stage('Build and Push Docker Image') {
             steps {
                 withCredentials([file(credentialsId: 'gcp-service-account-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                     script {
                         echo 'Setting up Google Cloud SDK and pushing Docker image to GCR...'
                         sh '''
-                            # Install and configure Google Cloud SDK
-                            curl https://sdk.cloud.google.com | bash -s -- --disable-prompts
-                            export PATH=$HOME/google-cloud-sdk/bin:$PATH
+                            # Clean up any existing Google Cloud SDK directory
+                            if [ -d "/var/jenkins_home/google-cloud-sdk" ]; then
+                                echo "Removing old Google Cloud SDK directory..."
+                                rm -rf /var/jenkins_home/google-cloud-sdk
+                            fi
+
+                            # Install Google Cloud SDK
+                            curl https://sdk.cloud.google.com | bash -s -- --disable-prompts --install-dir=/var/jenkins_home
+                            export PATH=/var/jenkins_home/google-cloud-sdk/bin:$PATH
 
                             # Authenticate with Google Cloud
                             gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
                             gcloud config set project ${GCP_PROJECT}
 
-                            # Tag and push Docker image to Google Container Registry
+                            # Build, tag, and push Docker image
+                            docker build -t ${DOCKERHUB_REPOSITORY}:latest .
                             docker tag ${DOCKERHUB_REPOSITORY}:latest gcr.io/${GCP_PROJECT}/course-testing:latest
                             docker push gcr.io/${GCP_PROJECT}/course-testing:latest
                         '''
