@@ -57,36 +57,31 @@ pipeline {
             }
         }
 
-        
-
-        stage('Deploy to GCP VM') {
+        stage('Deploy to Cloud Run') {
     steps {
-        withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+        withCredentials([file(credentialsId: 'gcp-key-2', variable: 'GOOGLE_APPLICATION_CREDENTIALS1')]) {
             script {
-                echo 'Deploying Docker image to GCP VM...'
+                echo 'Deploying to Cloud Run...'
                 sh '''
                     # Ensure gcloud is available in the PATH
                     export PATH=$PATH:${GCLOUD_PATH}
 
                     # Authenticate with Google Cloud using the service account
-                    gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                    gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS1}
                     gcloud config set project ${GCP_PROJECT}
 
-                    # Configure Docker to authenticate with GCR
-                    gcloud auth configure-docker --quiet
-
-                    # SSH into GCP VM
-                    gcloud compute ssh mlops --zone us-central1-a --project ${GCP_PROJECT} -- \
-                        "sudo apt-get update && \
-                         sudo apt-get install -y docker.io && \
-                         sudo systemctl enable docker && \
-                         sudo systemctl start docker && \
-                         docker pull gcr.io/${GCP_PROJECT}/course-testing:latest && \
-                         docker run -d -p 5000:5000 gcr.io/${GCP_PROJECT}/course-testing:latest"
+                    # Deploy the Docker image to Cloud Run
+                    gcloud run deploy course-testing \
+                        --image=gcr.io/${GCP_PROJECT}/course-testing:latest \
+                        --platform=managed \
+                        --region=us-central1 \
+                        --allow-unauthenticated
                 '''
             }
         }
     }
 }
+
+        
     }
 }
