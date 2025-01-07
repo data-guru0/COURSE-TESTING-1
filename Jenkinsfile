@@ -83,17 +83,16 @@ pipeline {
         stage('Push Docker Image to GCR') {
             steps {
                 script {
-                    echo 'Pushing Docker Image to Google Container Registry...'
-                sh '''
+                    sh '''
                     # Remove any existing Google Cloud SDK directory to avoid conflicts
                     rm -rf /var/jenkins_home/google-cloud-sdk
 
                     # Install Google Cloud SDK temporarily for the pipeline run
                     curl https://sdk.cloud.google.com | bash
 
-                    # Initialize the SDK to ensure gcloud is available
-                    source ${HOME}/google-cloud-sdk/completion.bash.inc
-                    source ${HOME}/google-cloud-sdk/path.bash.inc
+                    # Explicitly use bash to source the environment setup files
+                    bash -c "source ${HOME}/google-cloud-sdk/completion.bash.inc"
+                    bash -c "source ${HOME}/google-cloud-sdk/path.bash.inc"
 
                     # Authenticate with Google Cloud
                     gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
