@@ -34,7 +34,7 @@ pipeline {
 
         stage('Build and Push Docker Image') {
             steps {
-                withCredentials([file(credentialsId: 'gcp-service-account-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                     script {
                         echo 'Authenticating with Google Cloud and pushing Docker image to GCR...'
                         sh '''
