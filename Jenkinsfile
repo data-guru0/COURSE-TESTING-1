@@ -89,22 +89,23 @@ pipeline {
                         # Install Google Cloud SDK temporarily for the pipeline run
                         curl https://sdk.cloud.google.com | bash
 
+                        # Ensure the gcloud SDK is sourced with Bash
+                        bash -c "source ${HOME}/google-cloud-sdk/completion.bash.inc"
+                        bash -c "source ${HOME}/google-cloud-sdk/path.bash.inc"
+
                         # Ensure gcloud is in the path
                         export PATH=${HOME}/google-cloud-sdk/bin:$PATH
 
                         # Authenticate with Google Cloud using the credential file from Jenkins
                         withCredentials([file(credentialsId: 'gcp-service-account', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
-                            # Use bash explicitly to handle the syntax
-                            bash -c "source ${HOME}/google-cloud-sdk/completion.bash.inc"
-                            bash -c "source ${HOME}/google-cloud-sdk/path.bash.inc"
-
-                            gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                            # Activate the service account
+                            bash -c "gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}"
                             
                             # Tag the Docker image for Google Container Registry (GCR)
-                            docker tag ${DOCKERHUB_REPOSITORY}:latest gcr.io/${GCP_PROJECT}/course-testing:latest
+                            bash -c "docker tag ${DOCKERHUB_REPOSITORY}:latest gcr.io/${GCP_PROJECT}/course-testing:latest"
                             
                             # Push the image to GCR
-                            docker push gcr.io/${GCP_PROJECT}/course-testing:latest
+                            bash -c "docker push gcr.io/${GCP_PROJECT}/course-testing:latest"
                         }
                     '''
                 }
