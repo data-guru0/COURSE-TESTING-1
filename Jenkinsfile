@@ -90,8 +90,8 @@ pipeline {
                         curl https://sdk.cloud.google.com | bash
 
                         # Source the environment setup files to make gcloud available
-                        source ${HOME}/google-cloud-sdk/completion.bash.inc
-                        source ${HOME}/google-cloud-sdk/path.bash.inc
+                        . ${HOME}/google-cloud-sdk/completion.bash.inc
+                        . ${HOME}/google-cloud-sdk/path.bash.inc
 
                         # Ensure gcloud is in the path
                         export PATH=${HOME}/google-cloud-sdk/bin:$PATH
