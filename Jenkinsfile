@@ -62,6 +62,8 @@ pipeline {
         script {
             echo 'Deploying Docker image to GCP VM...'
             sh '''
+                export PATH=$PATH:${GCLOUD_PATH}
+                
                 # SSH into the GCP VM and deploy the Docker image
                 gcloud compute ssh mlops --zone ${GCP_ZONE} --project ${GCP_PROJECT} -- \
                     "docker pull gcr.io/${GCP_PROJECT}/course-testing:latest && \
