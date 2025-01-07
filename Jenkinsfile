@@ -6,8 +6,13 @@ pipeline {
         DOCKERHUB_CREDENTIAL_ID = 'dockerhub-token'
         DOCKERHUB_REGISTRY = 'https://registry.hub.docker.com'
         DOCKERHUB_REPOSITORY = 'dataguru97/course-testing'
+
+        GCP_PROJECT = 'vocal-antler-447107-i9' // Replace with your GCP project ID
+        GCP_REGION = 'us-central1'          // e.g., us-central1
+        GCP_ZONE = 'us-central1-a'          // e.g., us-central1-a
+        GOOGLE_APPLICATION_CREDENTIALS = 'vocal-antler-447107-i9-477919f97886.json'
     }
-    
+
     stages {
         stage('Cloning from Github') {
             steps {
@@ -51,7 +56,7 @@ pipeline {
             steps {
                 // Trivy Filesystem Scan
                 script {
-                    echo 'Scannning Filesystem with Trivy...'
+                    echo 'Scanning Filesystem with Trivy...'
                     sh "trivy fs ./ --format table -o trivy-fs-report.html"
                 }
             }
@@ -59,9 +64,8 @@ pipeline {
 
         stage('Build Docker image') {
             steps {
-                // Trivy Filesystem Scan
                 script {
-                    echo 'Build Docker image...'
+                    echo 'Building Docker image...'
                     dockerImage = docker.build("${DOCKERHUB_REPOSITORY}:latest") 
                 }
             }
@@ -69,7 +73,6 @@ pipeline {
 
         stage('Trivy Docker Image Scan') {
             steps {
-                // Trivy Docker Image Scan
                 script {
                     echo 'Scanning Docker Image with Trivy...'
                     sh "trivy image ${DOCKERHUB_REPOSITORY}:latest --format table -o trivy-image-report.html"
@@ -77,17 +80,22 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Push Docker Image to GCR') {
             steps {
-                // Push Docker Image to DockerHub
                 script {
-                    echo 'Pushing Docker Image to DockerHub...'
-                    docker.withRegistry("${DOCKERHUB_REGISTRY}", "${DOCKERHUB_CREDENTIAL_ID}"){
-                        dockerImage.push('latest')
-                    }
+                    echo 'Pushing Docker Image to Google Container Registry...'
+                    sh '''
+                        # Authenticate with Google Cloud
+                        gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                        
+                        # Tag the Docker image for Google Container Registry (GCR)
+                        docker tag ${DOCKERHUB_REPOSITORY}:latest gcr.io/${GCP_PROJECT}/course-testing:latest
+                        
+                        # Push the image to GCR
+                        docker push gcr.io/${GCP_PROJECT}/course-testing:latest
+                    '''
                 }
             }
         }
-
     }
 }
