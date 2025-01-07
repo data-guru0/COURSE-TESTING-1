@@ -53,7 +53,6 @@ pipeline {
 
         stage('Trivy FS Scan') {
             steps {
-                // Trivy Filesystem Scan
                 script {
                     echo 'Scanning Filesystem with Trivy...'
                     sh "trivy fs ./ --format table -o trivy-fs-report.html"
@@ -83,7 +82,6 @@ pipeline {
             steps {
                 script {
                     echo 'Pushing Docker Image to Google Container Registry...'
-                echo 'Pushing Docker Image to Google Container Registry...'
                     sh '''
                         # Remove any existing Google Cloud SDK directory to avoid conflicts
                         rm -rf /var/jenkins_home/google-cloud-sdk
@@ -92,14 +90,14 @@ pipeline {
                         curl https://sdk.cloud.google.com | bash
 
                         # Source the environment setup files to make gcloud available
-                        bash -c "source ${HOME}/google-cloud-sdk/completion.bash.inc"
-                        bash -c "source ${HOME}/google-cloud-sdk/path.bash.inc"
+                        source ${HOME}/google-cloud-sdk/completion.bash.inc
+                        source ${HOME}/google-cloud-sdk/path.bash.inc
 
                         # Ensure gcloud is in the path
                         export PATH=${HOME}/google-cloud-sdk/bin:$PATH
 
                         # Authenticate with Google Cloud using the credential file from Jenkins
-                        withCredentials([file(credentialsId: 'gcp-service-account-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+                        withCredentials([file(credentialsId: 'gcp-service-account', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
                             gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
                             
                             # Tag the Docker image for Google Container Registry (GCR)
