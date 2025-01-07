@@ -85,6 +85,9 @@ pipeline {
                 script {
                     echo 'Pushing Docker Image to Google Container Registry...'
                 sh '''
+                    # Remove any existing Google Cloud SDK directory to avoid conflicts
+                    rm -rf /var/jenkins_home/google-cloud-sdk
+
                     # Install Google Cloud SDK temporarily for the pipeline run
                     curl https://sdk.cloud.google.com | bash
 
