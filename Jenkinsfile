@@ -87,7 +87,10 @@ pipeline {
                 sh '''
                     # Install Google Cloud SDK temporarily for the pipeline run
                     curl https://sdk.cloud.google.com | bash
-                    exec -l $SHELL
+
+                    # Initialize the SDK to ensure gcloud is available
+                    source ${HOME}/google-cloud-sdk/completion.bash.inc
+                    source ${HOME}/google-cloud-sdk/path.bash.inc
 
                     # Authenticate with Google Cloud
                     gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
